@@ -5,12 +5,10 @@
         <Rectangle id="bg" width="1920" height="1080" color="0x040b1fFF" />
 
         <!-- Checking screen -->
-        <LayoutGroup id="checkingGroup"
-                     translation="[100,150]"
-                     layoutDirection="vert"
-                     itemSpacings="[0,28]">
+        <Group id="checkingGroup" translation="[100,150]">
             <Label id="checkingTitle"
                    text="Lightwave LINK"
+                   translation="[0,0]"
                    width="1500"
                    height="60"
                    font="LargeSystemFont"
@@ -18,6 +16,7 @@
                    color="0xFFFFFFFF" />
 
             <Label id="checkingLabel"
+                   translation="[0,88]"
                    width="1700"
                    wrap="true"
                    maxLines="4"
@@ -25,16 +24,13 @@
                    font="MediumSystemFont"
                    color="0xFFFFFFFF"
                    text="Checking network access..." />
-        </LayoutGroup>
+        </Group>
 
         <!-- Login screen -->
-        <LayoutGroup id="loginGroup"
-                     visible="false"
-                     translation="[100,150]"
-                     layoutDirection="vert"
-                     itemSpacings="[0,26]">
+        <Group id="loginGroup" translation="[100,150]" visible="false">
             <Label id="loginTitle"
                    text="Lightwave LINK Access"
+                   translation="[0,0]"
                    width="1500"
                    height="60"
                    font="LargeSystemFont"
@@ -42,6 +38,7 @@
                    color="0xFFFFFFFF" />
 
             <Label id="loginDesc"
+                   translation="[0,88]"
                    width="1700"
                    wrap="true"
                    maxLines="6"
@@ -51,10 +48,12 @@
                    text="This Roku is not on an approved Alabama Lightwave subnet. If you are an authorized user (customer or first responder), press OK to continue and view cameras." />
 
             <Button id="loginButton"
+                    translation="[0,358]"
                     minWidth="400"
                     text="Request Access" />
 
             <Label id="loginStatus"
+                   translation="[0,438]"
                    width="1700"
                    wrap="true"
                    maxLines="4"
@@ -62,7 +61,7 @@
                    font="MediumSystemFont"
                    color="0xFFFFFFFF"
                    text="" />
-        </LayoutGroup>
+        </Group>
 
         <!-- Content screen -->
         <Group id="contentGroup" visible="false">

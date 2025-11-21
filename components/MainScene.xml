@@ -11,7 +11,7 @@
                    translation="[0,0]"
                    width="1500"
                    height="60"
-                   font="LargeSystemFont"
+                   font="font:LargeSystemFont"
                    horizAlign="left"
                    color="0xFFFFFFFF" />
 
@@ -21,7 +21,7 @@
                    wrap="true"
                    maxLines="4"
                    height="160"
-                   font="MediumSystemFont"
+                   font="font:MediumSystemFont"
                    color="0xFFFFFFFF"
                    text="Checking network access..." />
         </Group>
@@ -33,7 +33,7 @@
                    translation="[0,0]"
                    width="1500"
                    height="60"
-                   font="LargeSystemFont"
+                   font="font:LargeSystemFont"
                    horizAlign="left"
                    color="0xFFFFFFFF" />
 
@@ -43,7 +43,7 @@
                    wrap="true"
                    maxLines="6"
                    height="240"
-                   font="MediumSystemFont"
+                   font="font:MediumSystemFont"
                    color="0xFFFFFFFF"
                    text="This Roku is not on an approved Alabama Lightwave subnet. If you are an authorized user (customer or first responder), press OK to continue and view cameras." />
 
@@ -58,7 +58,7 @@
                    wrap="true"
                    maxLines="4"
                    height="160"
-                   font="MediumSystemFont"
+                   font="font:MediumSystemFont"
                    color="0xFFFFFFFF"
                    text="" />
         </Group>
@@ -69,7 +69,7 @@
                    translation="[100,80]"
                    text="Lightwave LINK Cameras"
                    width="1500"
-                   font="LargeSystemFont"
+                   font="font:LargeSystemFont"
                    horizAlign="left" />
 
             <Rectangle id="brandBar"

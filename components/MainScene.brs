@@ -9,15 +9,59 @@ sub init()
 
     m.rowList.observeField("rowItemSelected", "onRowItemSelected")
 
+    setupLoginUi()
     m.top.setFocus(true)
     checkAccessAndRoute()
+end sub
+
+sub setupLoginUi()
+    if m.loginGroup = invalid then
+        m.loginGroup = CreateObject("roSGNode", "Group")
+        m.loginGroup.id = "loginGroup"
+        m.loginGroup.visible = false
+        m.top.appendChild(m.loginGroup)
+    end if
+
+    if m.loginTitle = invalid then
+        m.loginTitle = CreateObject("roSGNode", "Label")
+        m.loginTitle.text = "Login Required"
+        m.loginTitle.translation = [ 90, 120 ]
+        m.loginTitle.font = "font:LargeBoldSystemFont"
+        m.loginGroup.appendChild(m.loginTitle)
+    end if
+
+    if m.loginStatus = invalid then
+        m.loginStatus = CreateObject("roSGNode", "Label")
+        m.loginStatus.id = "loginStatus"
+        m.loginStatus.translation = [ 90, 170 ]
+        m.loginStatus.font = "font:MediumSystemFont"
+        m.loginGroup.appendChild(m.loginStatus)
+    end if
+
+    if m.loginHint = invalid then
+        m.loginHint = CreateObject("roSGNode", "Label")
+        m.loginHint.translation = [ 90, 210 ]
+        m.loginHint.font = "font:SmallSystemFont"
+        m.loginHint.text = "You are off the permitted subnet. Authenticate to continue."
+        m.loginGroup.appendChild(m.loginHint)
+    end if
+
+    if m.loginButton = invalid then
+        m.loginButton = CreateObject("roSGNode", "Button")
+        m.loginButton.id = "loginButton"
+        m.loginButton.translation = [ 90, 260 ]
+        m.loginButton.width = 400
+        m.loginButton.height = 60
+        m.loginButton.text = "Request Access"
+        m.loginGroup.appendChild(m.loginButton)
+    end if
 end sub
 
 sub checkAccessAndRoute()
     ipInfo = getDetectedIp()
     ip = ipInfo.ip
 
-    allowedPrefixes = [ "100.64.", "192.168.50." ]
+    allowedPrefixes = [ "100.64." ]
     ok = false
 
     if ip <> invalid and ip <> "" then
@@ -32,8 +76,28 @@ sub checkAccessAndRoute()
         m.checkingGroup.visible = false
         m.loginGroup.visible = true
         m.loginStatus.text = getLoginStatusMessage(ipInfo)
+        if m.loginButton <> invalid then m.loginButton.setFocus(true)
     end if
 end sub
+
+function isPrivateIp(ip as String) as Boolean
+    if ip = invalid or ip = "" then return true
+
+    if Left(ip, 3) = "10." then return true
+    if Left(ip, 8) = "192.168." then return true
+
+    if Left(ip, 4) = "172." then
+        parts = ip.split(".")
+        if parts.count() >= 2 then
+            secondOctet = val(parts[1])
+            if secondOctet >= 16 and secondOctet <= 31 then return true
+        end if
+    end if
+
+    if Left(ip, 8) = "169.254" then return true
+
+    return false
+end function
 
 function getDetectedIp() as Object
     di = CreateObject("roDeviceInfo")
@@ -42,14 +106,14 @@ function getDetectedIp() as Object
     if ipAddrs <> invalid and ipAddrs.count() > 0 then
         for each key in ipAddrs
             localIp = ipAddrs[key]
-            if localIp <> invalid and localIp <> "" then
+            if localIp <> invalid and localIp <> "" and not isPrivateIp(localIp) then
                 return { ip: localIp, source: "local" }
             end if
         end for
     end if
 
     externalIp = di.GetExternalIP()
-    if externalIp <> invalid and externalIp <> "" then
+    if externalIp <> invalid and externalIp <> "" and not isPrivateIp(externalIp) then
         return { ip: externalIp, source: "external" }
     end if
 
@@ -58,23 +122,28 @@ end function
 
 function getLoginStatusMessage(ipInfo as Object) as String
     if ipInfo.ip = invalid or ipInfo.ip = "" then
-        return "Unable to determine IP address."
+        return "Unable to determine non-private IP address."
     end if
 
     if ipInfo.source = "local" then
-        return "Local IP '" + ipInfo.ip + "' is not allowed."
+        return "Detected on-net address '" + ipInfo.ip + "' is not allowed for this app."
     end if
 
-    return "External IP '" + ipInfo.ip + "' is not allowed."
+    return "Detected external address '" + ipInfo.ip + "' is not allowed for this app."
 end function
 
 function onKeyEvent(key as String, press as Boolean) as Boolean
     if press = false then return false
 
-    if m.loginGroup.visible and key = "OK" then
-        m.loginStatus.text = "Access granted locally. Loading cameras..."
-        showCameras()
-        return true
+    if m.loginGroup.visible then
+        if key = "OK" then
+            m.loginStatus.text = "Requesting access..."
+            showCameras()
+            return true
+        else if key = "back" or key = "Back" then
+            m.loginStatus.text = "Access required."
+            return true
+        end if
     end if
 
     return false

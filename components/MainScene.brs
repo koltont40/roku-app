@@ -54,6 +54,7 @@ sub setupLoginUi()
         m.loginButton.minHeight = 60
         m.loginButton.text = "Request Access"
         m.loginGroup.appendChild(m.loginButton)
+        m.loginButton.observeField("buttonSelected", "onLoginButtonSelected")
     end if
 end sub
 
@@ -131,6 +132,13 @@ function getLoginStatusMessage(ipInfo as Object) as String
 
     return "Detected external address '" + ipInfo.ip + "' is not allowed for this app."
 end function
+
+sub onLoginButtonSelected(msg as Object)
+    if m.loginGroup.visible and msg <> invalid and msg.getData() = true then
+        m.loginStatus.text = "Requesting access..."
+        showCameras()
+    end if
+end sub
 
 function onKeyEvent(key as String, press as Boolean) as Boolean
     if press = false then return false

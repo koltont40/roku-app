@@ -50,8 +50,8 @@ sub setupLoginUi()
         m.loginButton = CreateObject("roSGNode", "Button")
         m.loginButton.id = "loginButton"
         m.loginButton.translation = [ 90, 260 ]
-        m.loginButton.width = 400
-        m.loginButton.height = 60
+        m.loginButton.minWidth = 400
+        m.loginButton.minHeight = 60
         m.loginButton.text = "Request Access"
         m.loginGroup.appendChild(m.loginButton)
     end if

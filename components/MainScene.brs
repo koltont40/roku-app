@@ -15,45 +15,14 @@ sub init()
 end sub
 
 sub setupLoginUi()
-    if m.loginGroup = invalid then
-        m.loginGroup = CreateObject("roSGNode", "Group")
-        m.loginGroup.id = "loginGroup"
-        m.loginGroup.visible = false
-        m.top.appendChild(m.loginGroup)
-    end if
+    if m.loginGroup <> invalid then
+        m.loginTitle = m.loginGroup.findNode("loginTitle")
+        m.loginDesc = m.loginGroup.findNode("loginDesc")
+        m.loginButton = m.loginGroup.findNode("loginButton")
 
-    if m.loginTitle = invalid then
-        m.loginTitle = CreateObject("roSGNode", "Label")
-        m.loginTitle.text = "Login Required"
-        m.loginTitle.translation = [ 90, 120 ]
-        m.loginTitle.font = "font:LargeBoldSystemFont"
-        m.loginGroup.appendChild(m.loginTitle)
-    end if
-
-    if m.loginStatus = invalid then
-        m.loginStatus = CreateObject("roSGNode", "Label")
-        m.loginStatus.id = "loginStatus"
-        m.loginStatus.translation = [ 90, 170 ]
-        m.loginStatus.font = "font:MediumSystemFont"
-        m.loginGroup.appendChild(m.loginStatus)
-    end if
-
-    if m.loginHint = invalid then
-        m.loginHint = CreateObject("roSGNode", "Label")
-        m.loginHint.translation = [ 90, 210 ]
-        m.loginHint.font = "font:SmallSystemFont"
-        m.loginHint.text = "You are off the permitted subnet. Authenticate to continue."
-        m.loginGroup.appendChild(m.loginHint)
-    end if
-
-    if m.loginButton = invalid then
-        m.loginButton = CreateObject("roSGNode", "Button")
-        m.loginButton.id = "loginButton"
-        m.loginButton.translation = [ 90, 260 ]
-        m.loginButton.minWidth = 400
-        m.loginButton.text = "Request Access"
-        m.loginGroup.appendChild(m.loginButton)
-        m.loginButton.observeField("buttonSelected", "onLoginButtonSelected")
+        if m.loginButton <> invalid then
+            m.loginButton.observeField("buttonSelected", "onLoginButtonSelected")
+        end if
     end if
 end sub
 
